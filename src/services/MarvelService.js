@@ -1,5 +1,5 @@
 class MarvelService {
-	//!! такой вид создания переменных дает сигнал другим программистов,что это нельзя менять
+	//!! такой вид создания переменных дает сигнал другим программистам,что это нельзя менять
 	_apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	// ключ сервиса Марвел, !! личный !!
 	_apiKey = 'apikey=27aab3ed755206bc6f75732c7b12b0be';
@@ -28,6 +28,7 @@ class MarvelService {
 
 	_transformCharacter = char => {
 		return {
+			id: char.id,
 			name: char.name,
 			description: char.description
 				? `${char.description.slice(0, 210)}...`
