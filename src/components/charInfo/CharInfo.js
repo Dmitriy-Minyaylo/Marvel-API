@@ -1,11 +1,10 @@
 import { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import './charInfo.scss';
-import checkPropTypes from 'prop-types/checkPropTypes';
 
 class CharInfo extends Component {
 	// новый стандарт дает нам возможность не использовать конструктор
