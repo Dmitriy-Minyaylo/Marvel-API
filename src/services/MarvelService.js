@@ -1,33 +1,27 @@
-class MarvelService {
-	//!! такой вид создания переменных дает сигнал другим программистам,что это нельзя менять
-	_apiBase = 'https://gateway.marvel.com:443/v1/public/';
-	// ключ сервиса Марвел, !! личный !!
-	_apiKey = 'apikey=27aab3ed755206bc6f75732c7b12b0be';
-	_baseOffset = 210;
-	getResource = async url => {
-		let res = await fetch(url);
+import { useHttp } from '../hooks/http.hooks';
 
-		if (!res.ok) {
-			throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-		}
-		return await res.json();
-	};
+const useMarvelService = () => {
+	const { loading, request, error, clearError } = useHttp();
+	//!! такой вид создания переменных дает сигнал другим программистам,что это нельзя менять
+	const _apiBase = 'https://gateway.marvel.com:443/v1/public/';
+	// ключ сервиса Марвел, !! личный !!
+	const _apiKey = 'apikey=27aab3ed755206bc6f75732c7b12b0be';
+	const _baseOffset = 210;
+
 	// метод для получения персонажей
-	getAllCharacters = async (offset = this._baseOffset) => {
-		const res = await this.getResource(
-			`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`
+	const getAllCharacters = async (offset = _baseOffset) => {
+		const res = await request(
+			`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`
 		);
-		return res.data.results.map(this._transformCharacter);
+		return res.data.results.map(_transformCharacter);
 	};
 	// метод для получения одного персонажа
-	getOneCharacter = async id => {
-		const res = await this.getResource(
-			`${this._apiBase}characters/${id}?${this._apiKey}`
-		);
-		return this._transformCharacter(res.data.results[0]);
+	const getOneCharacter = async id => {
+		const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+		return _transformCharacter(res.data.results[0]);
 	};
 
-	_transformCharacter = char => {
+	const _transformCharacter = char => {
 		return {
 			id: char.id,
 			name: char.name,
@@ -40,5 +34,6 @@ class MarvelService {
 			comics: char.comics.items,
 		};
 	};
-}
-export default MarvelService;
+	return { loading, error, clearError, getAllCharacters, getOneCharacter };
+};
+export default useMarvelService;
